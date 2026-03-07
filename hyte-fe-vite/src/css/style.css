@@ -1,0 +1,181 @@
+/* CSS reset - kevyt */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+  background: #0e0f13;
+  color: #f4f5f7;
+}
+
+/* Sivun keskitys */
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto; /* keskittää */
+  padding: 0 16px;
+}
+
+/* Header + nav (ei flexbox) */
+.site-header {
+  padding: 18px 0;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logo {
+  display: inline-block;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 20px;
+}
+
+/* Nav oikealle ilman flexboxia: float */
+.main-nav {
+  float: right;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list li {
+  display: inline-block;
+  margin-left: 14px;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 8px 10px;
+  text-decoration: none;
+  color: #d7d9df;
+  border-radius: 10px;
+  border: 1px solid transparent;
+}
+
+/* Pseudoluokat */
+.nav-link:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-link:active {
+  transform: translateY(1px);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Clearfix, koska käytettiin floatia */
+.site-header .container::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* About */
+.about {
+  padding: 48px 0;
+}
+
+.about-card {
+  width: 58%;
+  display: inline-block;
+  vertical-align: top;
+  padding: 22px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.about-image {
+  width: 38%;
+  height: 320px;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 4%;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  /* taustakuva CSS:llä (voit vaihtaa oikeaan kuvaan) */
+  background-color: rgba(255, 255, 255, 0.06);
+  background-image: url("images/hero.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.tag {
+  display: inline-block;
+  margin: 0 0 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: #d7d9df;
+  font-size: 13px;
+}
+
+h1 {
+  margin: 0 0 10px;
+  font-size: 40px;
+  line-height: 1.15;
+}
+
+.lead {
+  margin: 0 0 16px;
+  color: #cfd2da;
+}
+
+.cta {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  background: #7c5cff;
+  color: white;
+}
+
+.cta:hover {
+  background: #6b4cff;
+}
+
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 16px;
+  border-radius: 8px;
+  position: fixed;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+#snackbar.show {
+  visibility: visible;
+}
+
+table {
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+td, th {
+  padding: 6px 12px;
+  border-bottom: 1px solid #444;
+}
+
+button {
+  cursor: pointer;
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hyvinvointipäiväkirja</title>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="logo" href="#">Hyvinvointi Päiväkirja</a>
+
+        <nav class="main-nav" aria-label="Päävalikko">
+          <ul class="nav-list">
+            <li><a class="nav-link" href="#about">Koti</a></li>
+            <li><a class="nav-link" href="#items-section">Items</a></li>
+            <li><a class="nav-link" href="#users-section">Users</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="about" id="about">
+        <div class="container">
+          <div class="about-card">
+            <p class="tag">Hyvinvointi • Uni • Treeni</p>
+            <h1>Rakenna paremmat rutiinit</h1>
+            <p class="lead">Viikko 4 Tehtävä</p>
+
+            <a class="cta" href="#items-section">Näytä itemit</a>
+          </div>
+
+          <div class="about-image" role="img" aria-label="Kuva"></div>
+        </div>
+      </section>
+
+      <!-- ITEMS -->
+      <section class="items-section" id="items-section">
+        <div class="container">
+          <h2>Items</h2>
+
+          <button id="load-items-btn" type="button">
+            Hae itemit
+          </button>
+
+          <table id="items-table">
+            <thead>
+              <tr>
+                <th>Nimi</th>
+                <th>Info</th>
+                <th>Delete</th>
+                <th>ID</th>
+              </tr>
+            </thead>
+
+            <tbody id="items-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- USERS -->
+      <section class="users-section" id="users-section">
+        <div class="container">
+
+          <h2>Käyttäjät</h2>
+
+          <!-- USER FORM -->
+          <form id="add-user-form">
+
+            <div>
+              <label for="username">Käyttäjänimi</label><br />
+              <input
+                type="text"
+                id="username"
+                name="username"
+                required
+              />
+            </div>
+
+            <div>
+              <label for="password">Salasana</label><br />
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+              />
+            </div>
+
+            <div>
+              <label for="email">Sähköposti</label><br />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+              />
+            </div>
+
+            <br />
+
+            <button type="submit">
+              Lisää käyttäjä
+            </button>
+
+          </form>
+
+          <h3>Käyttäjälista</h3>
+
+          <ul id="users-list"></ul>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- SNACKBAR -->
+    <div id="snackbar"></div>
+
+    <!-- MAIN JS -->
+    <script type="module" src="/src/js/main.js"></script>
+
+  </body>
+</html>
