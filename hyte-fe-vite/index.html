@@ -9,14 +9,13 @@
   <body>
     <header class="site-header">
       <div class="container">
-        <a class="logo" href="#">Hyvinvointi Päiväkirja</a>
+        <a class="logo" href="#">Hyvinvointipäiväkirja</a>
 
         <nav class="main-nav" aria-label="Päävalikko">
           <ul class="nav-list">
-            <li><a class="nav-link" href="#about">Koti</a></li>
-            <li><a class="nav-link" href="#items-section">Items</a></li>
-            <li><a class="nav-link" href="#users-section">Users</a></li>
-            <li><a class="nav-link" href="#entries-section">Diary</a></li>
+            <li><a class="nav-link" href="#about">Etusivu</a></li>
+            <li><a class="nav-link" href="#users-section">Käyttäjät</a></li>
+            <li><a class="nav-link" href="#entries-section">Päiväkirja</a></li>
           </ul>
         </nav>
       </div>
@@ -28,9 +27,9 @@
           <div class="about-card">
             <p class="tag">Hyvinvointi • Uni • Treeni</p>
             <h1>Rakenna paremmat rutiinit</h1>
-            <p class="lead">Viikko 6 Tehtävä</p>
+            <p class="lead">Kirjaa mieliala, uni ja päivän tärkeimmät huomiot yhteen paikkaan.</p>
 
-            <a class="cta" href="#entries-section">Näytä päiväkirja</a>
+            <a class="cta" href="#entries-section">Näytä merkinnät</a>
           </div>
 
           <div class="about-image" role="img" aria-label="Kuva"></div>
@@ -47,8 +46,8 @@
             <thead>
               <tr>
                 <th>Nimi</th>
-                <th>Info</th>
-                <th>Delete</th>
+                <th>Tidot</th>
+                <th>Poista</th>
                 <th>ID</th>
               </tr>
             </thead>
@@ -60,7 +59,7 @@
 
       <section class="users-section" id="users-section">
         <div class="container">
-          <h2>Käyttäjät</h2>
+          <h2>Lisää käyttäjä</h2>
 
           <form id="add-user-form">
             <div>
@@ -83,7 +82,7 @@
             <button type="submit">Lisää käyttäjä</button>
           </form>
 
-          <h3>Käyttäjälista</h3>
+          <h3>Rekisteröidyt käyttäjät</h3>
           <ul id="users-list"></ul>
         </div>
       </section>
@@ -91,9 +90,9 @@
       <section class="entries-section" id="entries-section">
         <div class="container">
           <div class="section-top">
-            <h2>Päiväkirjamerkinnät</h2>
+            <h2>Hyvinvointipäiväkirja</h2>
             <div class="section-actions">
-              <button id="load-entries-btn" type="button">Hae merkinnät</button>
+              <button id="load-entries-btn" type="button">Näytä merkinnät</button>
               <button id="logout-btn" type="button">Kirjaudu ulos</button>
             </div>
           </div>

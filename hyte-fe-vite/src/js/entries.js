@@ -20,6 +20,64 @@ const getTokenHeaders = () => {
   };
 };
 
+const formatDate = (dateString) => {
+  if (!dateString) return '-';
+
+  const date = new Date(dateString);
+
+  if (Number.isNaN(date.getTime())) {
+    return dateString;
+  }
+
+  return date.toLocaleDateString('fi-FI', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+};
+
+const formatDateTime = (dateString) => {
+  if (!dateString) return '-';
+
+  const date = new Date(dateString);
+
+  if (Number.isNaN(date.getTime())) {
+    return dateString;
+  }
+
+  return date.toLocaleString('fi-FI', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
+
+const getMoodLabel = (mood) => {
+  if (!mood) return 'Tuntematon';
+  return mood;
+};
+
+const getMoodClass = (mood) => {
+  const value = mood?.toLowerCase();
+
+  switch (value) {
+    case 'happy':
+      return 'mood-happy';
+    case 'relaxed':
+      return 'mood-relaxed';
+    case 'energetic':
+      return 'mood-energetic';
+    case 'satisfied':
+      return 'mood-satisfied';
+    case 'tired':
+      return 'mood-tired';
+    default:
+      return 'mood-default';
+  }
+};
+
 export async function getEntries() {
   try {
     return await fetchData(API_URL, {
@@ -33,13 +91,19 @@ export async function getEntries() {
 
 const openModal = (entry) => {
   modalBody.innerHTML = `
-    <h3>Merkintä #${entry.entry_id}</h3>
-    <p><strong>Päivä:</strong> ${entry.entry_date}</p>
-    <p><strong>Mieliala:</strong> ${entry.mood}</p>
-    <p><strong>Paino:</strong> ${entry.weight} kg</p>
-    <p><strong>Uni:</strong> ${entry.sleep_hours} h</p>
-    <p><strong>Muistiinpanot:</strong> ${entry.notes}</p>
-    <p><strong>Luotu:</strong> ${entry.created_at}</p>
+    <div class="mood-badge ${getMoodClass(entry.mood)}">${getMoodLabel(entry.mood)}</div>
+    <h3>${formatDate(entry.entry_date)}</h3>
+
+    <div class="entry-meta">
+      <span>Uni: ${entry.sleep_hours ?? '-'} h</span>
+      <span>Paino: ${entry.weight ?? '-'} kg</span>
+    </div>
+
+    <p><strong>Muistiinpanot:</strong></p>
+    <p>${entry.notes || 'Ei muistiinpanoja'}</p>
+
+    <p><strong>Luotu:</strong> ${formatDateTime(entry.created_at)}</p>
+    <p><strong>Merkinnän tunniste:</strong> ${entry.entry_id ?? '-'}</p>
   `;
 
   modal.classList.remove('hidden');
@@ -61,22 +125,38 @@ if (modal) {
   });
 }
 
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+    closeModal();
+  }
+});
+
 export function renderEntries(entries) {
   if (!entriesContainer) return;
 
   entriesContainer.innerHTML = '';
+
+  if (!entries || entries.length === 0) {
+    entriesContainer.innerHTML = '<p>Ei merkintöjä näytettäväksi.</p>';
+    return;
+  }
 
   entries.forEach((entry) => {
     const card = document.createElement('article');
     card.classList.add('entry-card');
 
     card.innerHTML = `
-      <h3>${entry.mood}</h3>
-      <p><strong>Päivä:</strong> ${entry.entry_date}</p>
-      <p><strong>Uni:</strong> ${entry.sleep_hours} h</p>
-      <p><strong>Paino:</strong> ${entry.weight} kg</p>
-      <p>${entry.notes}</p>
-      <button class="open-entry-btn" type="button">Avaa</button>
+      <div class="mood-badge ${getMoodClass(entry.mood)}">${getMoodLabel(entry.mood)}</div>
+      <h3>${formatDate(entry.entry_date)}</h3>
+
+      <div class="entry-meta">
+        <span>Uni: ${entry.sleep_hours ?? '-'} h</span>
+        <span>Paino: ${entry.weight ?? '-'} kg</span>
+      </div>
+
+      <p class="entry-notes">${entry.notes || 'Ei muistiinpanoja'}</p>
+
+      <button class="open-entry-btn" type="button">Lue lisää</button>
     `;
 
     const openBtn = card.querySelector('.open-entry-btn');
