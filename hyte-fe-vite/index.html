@@ -14,8 +14,14 @@
         <nav class="main-nav" aria-label="Päävalikko">
           <ul class="nav-list">
             <li><a class="nav-link" href="#about">Etusivu</a></li>
-            <li><a class="nav-link" href="#users-section">Käyttäjät</a></li>
             <li><a class="nav-link" href="#entries-section">Päiväkirja</a></li>
+            <li><a class="nav-link" href="#training-section">Treeni</a></li>
+
+            <li>
+              <button id="logout-btn" class="logout-btn" type="button">
+                Kirjaudu ulos
+              </button>
+            </li>
           </ul>
         </nav>
       </div>
@@ -27,7 +33,9 @@
           <div class="about-card">
             <p class="tag">Hyvinvointi • Uni • Treeni</p>
             <h1>Rakenna paremmat rutiinit</h1>
-            <p class="lead">Kirjaa mieliala, uni ja päivän tärkeimmät huomiot yhteen paikkaan.</p>
+            <p class="lead">
+              Kirjaa mieliala, uni ja päivän tärkeimmät huomiot yhteen paikkaan.
+            </p>
 
             <a class="cta" href="#entries-section">Näytä merkinnät</a>
           </div>
@@ -36,68 +44,156 @@
         </div>
       </section>
 
-      <section class="items-section" id="items-section">
-        <div class="container">
-          <h2>Items</h2>
-
-          <button id="load-items-btn" type="button">Hae itemit</button>
-
-          <table id="items-table">
-            <thead>
-              <tr>
-                <th>Nimi</th>
-                <th>Tidot</th>
-                <th>Poista</th>
-                <th>ID</th>
-              </tr>
-            </thead>
-
-            <tbody id="items-table-body"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="users-section" id="users-section">
-        <div class="container">
-          <h2>Lisää käyttäjä</h2>
-
-          <form id="add-user-form">
-            <div>
-              <label for="username">Käyttäjänimi</label><br />
-              <input type="text" id="username" name="username" required />
-            </div>
-
-            <div>
-              <label for="password">Salasana</label><br />
-              <input type="password" id="password" name="password" required />
-            </div>
-
-            <div>
-              <label for="email">Sähköposti</label><br />
-              <input type="email" id="email" name="email" required />
-            </div>
-
-            <br />
-
-            <button type="submit">Lisää käyttäjä</button>
-          </form>
-
-          <h3>Rekisteröidyt käyttäjät</h3>
-          <ul id="users-list"></ul>
-        </div>
-      </section>
-
       <section class="entries-section" id="entries-section">
         <div class="container">
           <div class="section-top">
             <h2>Hyvinvointipäiväkirja</h2>
+
             <div class="section-actions">
-              <button id="load-entries-btn" type="button">Näytä merkinnät</button>
-              <button id="logout-btn" type="button">Kirjaudu ulos</button>
+              <button id="load-entries-btn" type="button">
+                Näytä merkinnät
+              </button>
             </div>
           </div>
 
+          <form id="add-entry-form" class="add-entry-form">
+            <input type="hidden" id="entry-id" />
+
+            <div>
+              <label for="entry-date">Päivämäärä</label>
+              <input type="date" id="entry-date" required />
+            </div>
+
+            <div>
+              <label for="entry-mood">Mieliala</label>
+
+              <select id="entry-mood" required>
+                <option value="">Valitse mieliala</option>
+                <option value="Happy">Happy</option>
+                <option value="Relaxed">Relaxed</option>
+                <option value="Energetic">Energetic</option>
+                <option value="Satisfied">Satisfied</option>
+                <option value="Tired">Tired</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="entry-weight">Paino (kg)</label>
+
+              <input
+                type="number"
+                step="0.1"
+                id="entry-weight"
+                placeholder="Esim. 70.5"
+              />
+            </div>
+
+            <div>
+              <label for="entry-sleep">Uni (h)</label>
+
+              <input type="number" id="entry-sleep" placeholder="Esim. 8" />
+            </div>
+
+            <div class="full-width">
+              <label for="entry-notes">Muistiinpanot</label>
+
+              <input
+                type="text"
+                id="entry-notes"
+                placeholder="Kirjoita päivän huomiot"
+              />
+            </div>
+
+            <div class="form-actions">
+              <button id="entry-submit-btn" type="submit">
+                Tallenna merkintä
+              </button>
+
+              <button
+                id="entry-cancel-btn"
+                class="secondary-btn hidden"
+                type="button"
+              >
+                Peruuta
+              </button>
+            </div>
+          </form>
+
           <div id="entries-container" class="entries-grid"></div>
+        </div>
+      </section>
+
+      <section class="training-section" id="training-section">
+        <div class="container">
+          <div class="section-top">
+            <h2>Treenipäiväkirja</h2>
+
+            <div class="section-actions">
+              <button id="load-training-btn" type="button">
+                Näytä treenit
+              </button>
+            </div>
+          </div>
+
+          <form id="add-training-form" class="add-entry-form">
+            <input type="hidden" id="training-id" />
+
+            <div>
+              <label for="training-date">Päivämäärä</label>
+
+              <input type="date" id="training-date" required />
+            </div>
+
+            <div>
+              <label for="training-type">Laji</label>
+
+              <select id="training-type" required>
+                <option value="">Valitse laji</option>
+                <option value="Juoksu">Juoksu</option>
+                <option value="Kuntosali">Kuntosali</option>
+                <option value="Pyöräily">Pyöräily</option>
+                <option value="Kävely">Kävely</option>
+                <option value="Uinti">Uinti</option>
+                <option value="Jooga">Jooga</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="training-duration">Kesto (min)</label>
+
+              <input
+                type="number"
+                id="training-duration"
+                placeholder="Esim. 45"
+              />
+            </div>
+
+            <div>
+              <label for="training-calories">Kulutus (kcal)</label>
+
+              <input
+                type="number"
+                id="training-calories"
+                placeholder="Esim. 400"
+              />
+            </div>
+
+            <div class="form-actions">
+              <button id="training-submit-btn" type="submit">
+                Tallenna treeni
+              </button>
+
+              <button
+                id="training-cancel-btn"
+                class="secondary-btn hidden"
+                type="button"
+              >
+                Peruuta
+              </button>
+            </div>
+          </form>
+
+          <div id="training-container" class="training-grid"></div>
         </div>
       </section>
     </main>
@@ -106,7 +202,10 @@
 
     <div id="entry-modal" class="modal hidden">
       <div class="modal-content">
-        <button id="close-modal-btn" class="modal-close" type="button">&times;</button>
+        <button id="close-modal-btn" class="modal-close" type="button">
+          &times;
+        </button>
+
         <div id="modal-body"></div>
       </div>
     </div>

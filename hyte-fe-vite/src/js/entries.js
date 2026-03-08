@@ -1,9 +1,9 @@
 import {fetchData} from './fetch.js';
 
 const API_URL = 'http://127.0.0.1:3000/api/entries';
-const FALLBACK_URL = '/diary.json';
 
 const entriesContainer = document.getElementById('entries-container');
+const addEntryForm = document.getElementById('add-entry-form');
 const modal = document.getElementById('entry-modal');
 const modalBody = document.getElementById('modal-body');
 const closeModalBtn = document.getElementById('close-modal-btn');
@@ -79,14 +79,46 @@ const getMoodClass = (mood) => {
 };
 
 export async function getEntries() {
-  try {
-    return await fetchData(API_URL, {
-      headers: getTokenHeaders(),
-    });
-  } catch (error) {
-    console.warn('API entries failed, using diary.json fallback:', error);
-    return await fetchData(FALLBACK_URL);
+  return await fetchData(API_URL, {
+    headers: getTokenHeaders(),
+  });
+}
+
+export async function createEntry(entry) {
+  return await fetchData(API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getTokenHeaders(),
+    },
+    body: JSON.stringify(entry),
+  });
+}
+
+export async function updateEntry(entryId, entry) {
+  return await fetchData(`${API_URL}/${entryId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getTokenHeaders(),
+    },
+    body: JSON.stringify(entry),
+  });
+}
+
+export async function deleteEntry(entryId) {
+  const response = await fetch(`${API_URL}/${entryId}`, {
+    method: 'DELETE',
+    headers: {
+      ...getTokenHeaders(),
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
   }
+
+  return true;
 }
 
 const openModal = (entry) => {
@@ -113,6 +145,44 @@ const closeModal = () => {
   modal.classList.add('hidden');
 };
 
+const fillEntryFormForEdit = (entry) => {
+  document.getElementById('entry-id').value = entry.entry_id ?? '';
+  document.getElementById('entry-date').value = entry.entry_date ?? '';
+  document.getElementById('entry-mood').value = entry.mood ?? '';
+  document.getElementById('entry-weight').value = entry.weight ?? '';
+  document.getElementById('entry-sleep').value = entry.sleep_hours ?? '';
+  document.getElementById('entry-notes').value = entry.notes ?? '';
+
+  const submitBtn = document.getElementById('entry-submit-btn');
+  const cancelBtn = document.getElementById('entry-cancel-btn');
+
+  if (submitBtn) {
+    submitBtn.textContent = 'Tallenna muutokset';
+  }
+
+  if (cancelBtn) {
+    cancelBtn.classList.remove('hidden');
+  }
+
+  addEntryForm?.scrollIntoView({behavior: 'smooth', block: 'start'});
+};
+
+const resetEntryForm = () => {
+  addEntryForm?.reset();
+  document.getElementById('entry-id').value = '';
+
+  const submitBtn = document.getElementById('entry-submit-btn');
+  const cancelBtn = document.getElementById('entry-cancel-btn');
+
+  if (submitBtn) {
+    submitBtn.textContent = 'Tallenna merkintä';
+  }
+
+  if (cancelBtn) {
+    cancelBtn.classList.add('hidden');
+  }
+};
+
 if (closeModalBtn) {
   closeModalBtn.addEventListener('click', closeModal);
 }
@@ -130,6 +200,14 @@ document.addEventListener('keydown', (event) => {
     closeModal();
   }
 });
+
+const entryCancelBtn = document.getElementById('entry-cancel-btn');
+
+if (entryCancelBtn) {
+  entryCancelBtn.addEventListener('click', () => {
+    resetEntryForm();
+  });
+}
 
 export function renderEntries(entries) {
   if (!entriesContainer) return;
@@ -156,11 +234,39 @@ export function renderEntries(entries) {
 
       <p class="entry-notes">${entry.notes || 'Ei muistiinpanoja'}</p>
 
-      <button class="open-entry-btn" type="button">Lue lisää</button>
+      <div class="entry-actions">
+        <button class="open-entry-btn" type="button">Lue lisää</button>
+        <button class="edit-entry-btn" type="button">Muokkaa</button>
+        <button class="delete-entry-btn" type="button">Poista</button>
+      </div>
     `;
 
     const openBtn = card.querySelector('.open-entry-btn');
+    const editBtn = card.querySelector('.edit-entry-btn');
+    const deleteBtn = card.querySelector('.delete-entry-btn');
+
     openBtn.addEventListener('click', () => openModal(entry));
+    editBtn.addEventListener('click', () => fillEntryFormForEdit(entry));
+
+    deleteBtn.addEventListener('click', async () => {
+      const confirmed = window.confirm(
+        'Haluatko varmasti poistaa tämän päiväkirjamerkinnän?'
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      try {
+        await deleteEntry(entry.entry_id);
+        await loadAndRenderEntries();
+        resetEntryForm();
+        alert('Päiväkirjamerkintä poistettu');
+      } catch (error) {
+        console.error('Deleting entry failed:', error);
+        alert(`Merkinnän poisto epäonnistui: ${error.message}`);
+      }
+    });
 
     entriesContainer.appendChild(card);
   });
@@ -169,4 +275,36 @@ export function renderEntries(entries) {
 export async function loadAndRenderEntries() {
   const entries = await getEntries();
   renderEntries(entries);
+}
+
+if (addEntryForm) {
+  addEntryForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const entryId = document.getElementById('entry-id').value;
+
+    const entry = {
+      entry_date: document.getElementById('entry-date').value,
+      mood: document.getElementById('entry-mood').value.trim(),
+      weight: document.getElementById('entry-weight').value || null,
+      sleep_hours: document.getElementById('entry-sleep').value || null,
+      notes: document.getElementById('entry-notes').value.trim(),
+    };
+
+    try {
+      if (entryId) {
+        await updateEntry(entryId, entry);
+        alert('Merkintä päivitetty');
+      } else {
+        await createEntry(entry);
+        alert('Merkintä tallennettu');
+      }
+
+      resetEntryForm();
+      await loadAndRenderEntries();
+    } catch (error) {
+      console.error('Saving entry failed:', error);
+      alert(`Merkinnän tallennus epäonnistui: ${error.message}`);
+    }
+  });
 }
