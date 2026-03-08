@@ -1,9 +1,18 @@
 import '../css/style.css';
 import {loadAndRenderItems} from './items.js';
 import {getUsers, addUser, renderUsers} from './users.js';
+import {loadAndRenderEntries} from './entries.js';
+
+const token = localStorage.getItem('token');
+
+if (!token) {
+  window.location.href = '/login.html';
+}
 
 const loadItemsBtn = document.getElementById('load-items-btn');
 const addUserForm = document.getElementById('add-user-form');
+const loadEntriesBtn = document.getElementById('load-entries-btn');
+const logoutBtn = document.getElementById('logout-btn');
 const snackbar = document.getElementById('snackbar');
 
 const showSnackbar = (message) => {
@@ -38,6 +47,25 @@ if (loadItemsBtn) {
   });
 }
 
+if (loadEntriesBtn) {
+  loadEntriesBtn.addEventListener('click', async () => {
+    try {
+      await loadAndRenderEntries();
+      showSnackbar('Päiväkirjamerkinnät ladattu');
+    } catch (error) {
+      console.error('Fetching entries failed:', error);
+      showSnackbar('Merkintöjen haku epäonnistui');
+    }
+  });
+}
+
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('token');
+    window.location.href = '/login.html';
+  });
+}
+
 if (addUserForm) {
   addUserForm.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -50,7 +78,6 @@ if (addUserForm) {
 
     try {
       await addUser(user);
-
       showSnackbar('Käyttäjä lisätty onnistuneesti');
 
       const users = await getUsers();

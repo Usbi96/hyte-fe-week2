@@ -16,35 +16,32 @@
             <li><a class="nav-link" href="#about">Koti</a></li>
             <li><a class="nav-link" href="#items-section">Items</a></li>
             <li><a class="nav-link" href="#users-section">Users</a></li>
+            <li><a class="nav-link" href="#entries-section">Diary</a></li>
           </ul>
         </nav>
       </div>
     </header>
 
     <main>
-      <!-- HERO -->
       <section class="about" id="about">
         <div class="container">
           <div class="about-card">
             <p class="tag">Hyvinvointi • Uni • Treeni</p>
             <h1>Rakenna paremmat rutiinit</h1>
-            <p class="lead">Viikko 4 Tehtävä</p>
+            <p class="lead">Viikko 6 Tehtävä</p>
 
-            <a class="cta" href="#items-section">Näytä itemit</a>
+            <a class="cta" href="#entries-section">Näytä päiväkirja</a>
           </div>
 
           <div class="about-image" role="img" aria-label="Kuva"></div>
         </div>
       </section>
 
-      <!-- ITEMS -->
       <section class="items-section" id="items-section">
         <div class="container">
           <h2>Items</h2>
 
-          <button id="load-items-btn" type="button">
-            Hae itemit
-          </button>
+          <button id="load-items-btn" type="button">Hae itemit</button>
 
           <table id="items-table">
             <thead>
@@ -61,67 +58,60 @@
         </div>
       </section>
 
-      <!-- USERS -->
       <section class="users-section" id="users-section">
         <div class="container">
-
           <h2>Käyttäjät</h2>
 
-          <!-- USER FORM -->
           <form id="add-user-form">
-
             <div>
               <label for="username">Käyttäjänimi</label><br />
-              <input
-                type="text"
-                id="username"
-                name="username"
-                required
-              />
+              <input type="text" id="username" name="username" required />
             </div>
 
             <div>
               <label for="password">Salasana</label><br />
-              <input
-                type="password"
-                id="password"
-                name="password"
-                required
-              />
+              <input type="password" id="password" name="password" required />
             </div>
 
             <div>
               <label for="email">Sähköposti</label><br />
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-              />
+              <input type="email" id="email" name="email" required />
             </div>
 
             <br />
 
-            <button type="submit">
-              Lisää käyttäjä
-            </button>
-
+            <button type="submit">Lisää käyttäjä</button>
           </form>
 
           <h3>Käyttäjälista</h3>
-
           <ul id="users-list"></ul>
-
         </div>
       </section>
 
+      <section class="entries-section" id="entries-section">
+        <div class="container">
+          <div class="section-top">
+            <h2>Päiväkirjamerkinnät</h2>
+            <div class="section-actions">
+              <button id="load-entries-btn" type="button">Hae merkinnät</button>
+              <button id="logout-btn" type="button">Kirjaudu ulos</button>
+            </div>
+          </div>
+
+          <div id="entries-container" class="entries-grid"></div>
+        </div>
+      </section>
     </main>
 
-    <!-- SNACKBAR -->
     <div id="snackbar"></div>
 
-    <!-- MAIN JS -->
-    <script type="module" src="/src/js/main.js"></script>
+    <div id="entry-modal" class="modal hidden">
+      <div class="modal-content">
+        <button id="close-modal-btn" class="modal-close" type="button">&times;</button>
+        <div id="modal-body"></div>
+      </div>
+    </div>
 
+    <script type="module" src="/src/js/main.js"></script>
   </body>
 </html>

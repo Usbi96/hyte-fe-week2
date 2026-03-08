@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kirjautuminen</title>
+    <script type="module" src="/src/js/login.js"></script>
+  </head>
+  <body>
+    <main class="login-page">
+      <section class="login-card">
+        <h1>Kirjaudu sisään</h1>
+
+        <form id="login-form">
+          <div>
+            <label for="login-username">Käyttäjänimi</label>
+            <input type="text" id="login-username" required />
+          </div>
+
+          <div>
+            <label for="login-password">Salasana</label>
+            <input type="password" id="login-password" required />
+          </div>
+
+          <button type="submit">Kirjaudu</button>
+        </form>
+
+        <p id="login-message"></p>
+      </section>
+    </main>
+  </body>
+</html>
